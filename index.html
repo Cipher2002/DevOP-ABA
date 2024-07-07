@@ -8,7 +8,7 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: #fff; /* Changed background to white */
+            background: #fff;
         }
 
         .bubble {
@@ -23,7 +23,7 @@
         function createBubble() {
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
-            const size = Math.random() * 50 + 10; // Bubble size between 10px and 60px
+            const size = Math.random() * 50 + 10;
             bubble.style.width = `${size}px`;
             bubble.style.height = `${size}px`;
             bubble.style.backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.6)`;
@@ -32,22 +32,19 @@
 
             document.body.appendChild(bubble);
 
-            // Animate bubble floating upwards
-            const animationDuration = Math.random() * 5 + 5; // Duration between 5s and 10s
+            const animationDuration = Math.random() * 5 + 5;
             bubble.style.transition = `transform ${animationDuration}s ease-in, opacity ${animationDuration}s`;
             setTimeout(() => {
-                bubble.style.transform = `translateY(-120vh)`; // Increased height to make bubbles go higher
+                bubble.style.transform = `translateY(-120vh)`;
                 bubble.style.opacity = '0';
             }, 100);
 
-            // Remove bubble after animation
             setTimeout(() => {
                 document.body.removeChild(bubble);
             }, animationDuration * 1000);
         }
 
-        // Create bubbles at faster intervals
-        setInterval(createBubble, 200); // Faster bubble emergence
+        setInterval(createBubble, 200);
     </script>
 </body>
 </html>
