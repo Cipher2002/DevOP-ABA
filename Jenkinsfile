@@ -1,23 +1,56 @@
 pipeline {
     agent any
+    environment {
+        dockerImage = ''
+        registry = 'devop-aba'
+        registryCredential = ''
+        dockerRunPort = '8081:80' // Map the host port 8081 to the container port 80
+    }
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                it credentialsId: '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', url: 'https://github.com/Cipher2002/DevOP-ABA.git'
+                checkout scmGit(
+                    branches: [[name: '*/master']],
+                    extensions: [],
+                    userRemoteConfigs: [[url: 'https://github.com/Cipher2002/DevOP-ABA.git']]
+                )
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("devop-aba:${env.BUILD_ID}")
+                    dockerImage = docker.build(registry)
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        dockerImage.push("${env.BUILD_ID}")
+                        dockerImage.push("latest")
+                    }
                 }
             }
         }
         stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run("-p 8080:81")
+                    // Clean up any running containers
+                    sh "docker ps -q --filter 'ancestor=${registry}:latest' | xargs --no-run-if-empty docker rm -f"
+                    
+                    // Run the new container on port 8081
+                    def containerId = dockerImage.run("-p ${dockerRunPort}").id
+                    echo "Container is running at: http://localhost:8081"
                 }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                // Clean up Docker images after build
+                sh "docker rmi ${dockerImage.id} || true"
             }
         }
     }
