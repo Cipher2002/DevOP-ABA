@@ -23,16 +23,6 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        dockerImage.push("${env.BUILD_ID}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-        }
         stage('Run Docker Container') {
             steps {
                 script {                    
