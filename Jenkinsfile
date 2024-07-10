@@ -16,7 +16,7 @@ pipeline {
         stage ('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run('-p 8080:8080')
+                    dockerImage.run('-p 8080:81')
                 }
             }
         }
@@ -24,8 +24,8 @@ pipeline {
     post {
         always {
             script {
-                docker ps -a -q --filter "ancestor=devop-aba:${env.BUILD_ID}" | xargs docker rm -f
-                docker rmi devop-aba:${env.BUILD_ID}
+                sh "docker ps -a -q --filter ancestor=devop-aba:${env.BUILD_ID} | xargs docker rm -f"
+                sh "docker rmi devop-aba:${env.BUILD_ID}"
             }
         }
     }
