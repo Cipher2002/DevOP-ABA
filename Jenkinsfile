@@ -35,10 +35,7 @@ pipeline {
         }
         stage('Run Docker Container') {
             steps {
-                script {
-                    // Clean up any running containers
-                    sh "docker ps -q --filter 'ancestor=${registry}:latest' | xargs --no-run-if-empty docker rm -f"
-                    
+                script {                    
                     // Run the new container on port 8081
                     def containerId = dockerImage.run("-p ${dockerRunPort}").id
                     echo "Container is running at: http://localhost:8081"
