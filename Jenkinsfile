@@ -1,22 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage {"Checkout Code"} {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/Cipher2002/DevOP-ABA.git'
+                git credentialsId: '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', url: 'https://github.com/Cipher2002/DevOP-ABA.git'
             }
         }
-        stage ('Build Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     dockerImage = docker.build("devop-aba:${env.BUILD_ID}")
                 }
             }
         }
-        stage ('Run Docker Container') {
+        stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run('-p 8080:81')
+                    dockerImage.run("-p 8080:80")
                 }
             }
         }
@@ -24,6 +24,7 @@ pipeline {
     post {
         always {
             script {
+                // Clean up the Docker container and image
                 sh "docker ps -a -q --filter ancestor=devop-aba:${env.BUILD_ID} | xargs docker rm -f"
                 sh "docker rmi devop-aba:${env.BUILD_ID}"
             }
