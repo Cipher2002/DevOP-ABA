@@ -4,7 +4,7 @@ pipeline {
         dockerImage = ''
         registry = 'devop-aba'
         registryCredential = 'anshchauhan2002'
-        dockerRunPort = '8081:80' // Map the host port 8081 to the container port 80
+        dockerRunPort = '8089:80' // Map the host port 8081 to the container port 80
     }
     stages {
         stage('Checkout') {
@@ -28,7 +28,7 @@ pipeline {
                 script {                    
                     // Run the new container on port 8081
                     def containerId = dockerImage.run("-p ${dockerRunPort}").id
-                    echo "Container is running at: http://localhost:8081"
+                    echo "Container is running at: http://localhost:8089"
                 }
             }
         }
