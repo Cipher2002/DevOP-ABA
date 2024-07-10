@@ -3,7 +3,7 @@ pipeline {
     environment {
         dockerImage = ''
         registry = 'devop-aba'
-        registryCredential = 'dckr_pat_QigUP8hIzmm9lVRwMrEEMG6TRik'
+        registryCredential = 'anshchauhan2002'
         dockerRunPort = '8081:80' // Map the host port 8081 to the container port 80
     }
     stages {
@@ -40,14 +40,6 @@ pipeline {
                     def containerId = dockerImage.run("-p ${dockerRunPort}").id
                     echo "Container is running at: http://localhost:8081"
                 }
-            }
-        }
-    }
-    post {
-        always {
-            script {
-                // Clean up Docker images after build
-                sh "docker rmi ${dockerImage.id} || true"
             }
         }
     }
