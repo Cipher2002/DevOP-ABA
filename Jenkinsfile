@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git clone 'https://github.com/Cipher2002/DevOP-ABA.git'
+                it credentialsId: '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', url: 'https://github.com/Cipher2002/DevOP-ABA.git'
             }
         }
         stage('Build Docker Image') {
