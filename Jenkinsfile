@@ -3,7 +3,7 @@ pipeline {
     environment {
         dockerImage = ''
         registry = 'devop-aba'
-        registryCredential = ''
+        registryCredential = 'dckr_pat_QigUP8hIzmm9lVRwMrEEMG6TRik'
         dockerRunPort = '8081:80' // Map the host port 8081 to the container port 80
     }
     stages {
