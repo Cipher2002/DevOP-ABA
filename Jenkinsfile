@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage {'Clone Repository'} {
+        stage {"Checkout Code"} {
             steps {
                 git 'https://github.com/Cipher2002/DevOP-ABA.git'
             }
